@@ -365,14 +365,15 @@ static void pwr_handle_stream_state_changed(void *data,
 	switch (state) {
 	case PW_STREAM_STATE_STREAMING:
 		cast->pwr_stream_state = true;
-		xdpw_pwr_dequeue_buffer(cast);
-		xdpw_wlr_frame_capture(cast);
-		break;
-	case PW_STREAM_STATE_PAUSED:
-		if (old == PW_STREAM_STATE_STREAMING && cast->current_frame.pw_buffer) {
-			xdpw_pwr_enqueue_buffer(cast);
+		// A capture started before a pause may still be in flight, it will
+		// queue its buffer and trigger the next cycle when it completes
+		if (!cast->current_frame.pw_buffer) {
+			xdpw_pwr_dequeue_buffer(cast);
+			if (cast->current_frame.pw_buffer) {
+				xdpw_wlr_frame_capture(cast);
+			}
 		}
-		// fall through
+		break;
 	default:
 		cast->pwr_stream_state = false;
 		pwr_disarm_process_retry(cast);
