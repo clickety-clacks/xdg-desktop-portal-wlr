@@ -93,6 +93,9 @@ void xdpw_screencast_instance_destroy(struct xdpw_screencast_instance *cast) {
 			xdpw_destroy_timer(timer);
 		}
 	}
+	// Destroyed above, the stream state change on disconnect must not
+	// destroy it again
+	cast->process_retry = NULL;
 	struct xdpw_session *sess, *stmp;
 	wl_list_for_each_safe(sess, stmp, &cast->ctx->state->xdpw_sessions, link) {
 		if (sess->screencast_data.screencast_instance == cast) {
