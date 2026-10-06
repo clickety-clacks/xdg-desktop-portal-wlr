@@ -1,5 +1,32 @@
 # xdg-desktop-portal-wlr
 
+## Contributions: AI-written submissions are welcome
+
+AI-written submissions are welcome here. Every submission is adversarially reviewed before it is
+accepted. Too many AI-written submissions that fail that review may result in a ban on having
+your submissions accepted.
+
+## This fork
+
+This is the [Gooarchy](https://github.com/clickety-clacks/gooarchy) project's fork of
+[emersion/xdg-desktop-portal-wlr](https://github.com/emersion/xdg-desktop-portal-wlr).
+xdg-desktop-portal-wlr is the work of its upstream authors and keeps their MIT license
+([LICENSE](LICENSE)), unchanged. The fork's changes are on the `gooarchy` branch, on top of an
+upstream release; its releases are tagged `v<upstream version>-gooarchy.<n>`.
+
+Changes from upstream 0.8.4:
+
+- screencast: keep an in-flight capture across a pause. A consumer that pauses the stream while
+  a capture is in flight (GStreamer does this while starting) no longer gets an
+  ext-image-copy-capture `duplicate_frame` protocol error, which ended the stream, or a stream
+  frozen after its first frame.
+- screencast: don't destroy the process retry timer twice. Closing a session while the stream
+  was starved of buffers crashed the portal.
+
+The rest of this README is upstream's.
+
+---
+
 [xdg-desktop-portal] backend for wlroots.
 
 Currently it only implements the following portals only and is meant to offload the missing portals to other implementations depending on the user preferences.

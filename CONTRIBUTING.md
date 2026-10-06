@@ -1,5 +1,13 @@
 # Contributing
 
+## AI-written submissions are welcome
+
+AI-written submissions are welcome here. Every submission is adversarially reviewed before it is
+accepted. Too many AI-written submissions that fail that review may result in a ban on having
+your submissions accepted.
+
+## Upstream's guidelines
+
 We closely follow the wlroots [contributing] guidelines where possible. Please
 see that document for more information.
 
