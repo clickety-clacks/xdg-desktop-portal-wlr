@@ -1,0 +1,36 @@
+name: Fast check
+
+on:
+  pull_request:
+    branches: [gooarchy]
+  merge_group:
+    branches: [gooarchy]
+  push:
+    branches: [gooarchy]
+
+jobs:
+  build-and-stage:
+    name: Build and stage
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            meson ninja-build pkg-config libpipewire-0.3-dev libwayland-dev \
+            libwayland-bin wayland-protocols libinih-dev libgbm-dev libdrm-dev \
+            libsystemd-dev
+      - name: Configure and build
+        run: |
+          meson setup build -Dsd-bus-provider=libsystemd -Dman-pages=disabled
+          meson compile -C build -j 2
+      - name: Stage package contents
+        run: |
+          meson install -C build --destdir "$RUNNER_TEMP/stage"
+          test -x "$RUNNER_TEMP/stage/usr/local/libexec/xdg-desktop-portal-wlr"
+          test -f "$RUNNER_TEMP/stage/usr/local/share/xdg-desktop-portal/portals/wlr.portal"
+          test -f "$RUNNER_TEMP/stage/usr/local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.wlr.service"

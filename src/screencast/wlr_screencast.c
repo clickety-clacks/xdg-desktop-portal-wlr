@@ -15,6 +15,7 @@
 #include <sys/mman.h>
 #include <sys/param.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <assert.h>
 #include <wayland-client-protocol.h>
 #include <xf86drm.h>
